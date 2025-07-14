@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MyAttendanceTracker: Simplify attendance management for schools.">
+    <meta name="author" content="Victory, Founder">
+    <title>MyAttendanceTracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #333;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f0 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.1);
+        }
+
+        .logo span {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+            position: relative;
+        }
+
+        nav ul li a {
+            color: #555;
+            font-weight: bold;
+            font-size: 0.95em;
+            padding: 5px 10px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #4CAF50;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-top: 3px solid #4CAF50;
+            border-radius: 0 0 5px 5px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-weight: normal;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .nav-btn {
+            color: #4CAF50 !important;
+            border: 1px solid #4CAF50;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #4CAF50;
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background-color: #4CAF50;
+            color: #fff !important;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sections */
+        section {
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
+            color: #fff;
+            padding: 80px 0;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .hero-banner h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-banner p {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .form-section {
+            padding: 20px 0 80px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+            align-items: flex-start;
+        }
+
+        .form-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-card h2 {
+            font-size: 2em;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .form-card p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            animation: fadeIn 0.5s ease;
+            animation-delay: calc(var(--order) * 0.1s);
+            animation-fill-mode: both;
+        }
+
+        .form-group:nth-child(1) { --order: 1; }
+        .form-group:nth-child(2) { --order: 2; }
+        .form-group:nth-child(3) { --order: 3; }
+        .form-group:nth-child(4) { --order: 4; }
+        .form-group:nth-child(5) { --order: 5; }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="checkbox"] {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4CAF50;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        .form-group.valid .input-icon {
+            display: block;
+        }
+
+        .form-group .tooltip {
+            position: absolute;
+            right: 10px;
+            top: -30px;
+            background: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            display: none;
+            z-index: 10;
+        }
+
+        .form-group input:focus + .tooltip {
+            display: block;
+        }
+
+        .password-strength {
+            height: 5px;
+            background: #eee;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .password-strength div {
+            height: 100%;
+            border-radius: 5px;
+            width: 0;
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        .btn-form {
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .btn-form:hover {
+            background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .btn-form.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .form-links {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95em;
+        }
+
+        .form-links a {
+            color: #64B5F6;
+            transition: all 0.3s ease;
+        }
+
+        .form-links a:hover {
+            color: #42A5F5;
+            text-decoration: underline;
+            transform: translateY(-1px);
+        }
+
+        .other-logins {
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            animation: fadeIn 0.7s ease;
+        }
+
+        .other-logins h3 {
+            font-size: 1.4em;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .other-logins ul li a {
+            color: #555;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .other-logins ul li a:hover {
+            color: #4CAF50;
+            transform: translateX(5px);
+        }
+
+        .other-logins ul li a i {
+            margin-right: 8px;
+            color: #4CAF50;
+            transition: transform 0.3s ease;
+        }
+
+        .other-logins ul li a:hover i {
+            transform: scale(1.2);
+        }
+
+        .about-myat-sidebar {
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+
+        .about-myat-sidebar h4 {
+            font-size: 1.1em;
+            color: #333;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .about-myat-sidebar p {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            color: #D32F2F;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #eee;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar div {
+            height: 100%;
+            background: #4CAF50;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        footer {
+            background-color: #333;
+            color: #eee;
+            padding: 60px 0 30px;
+            font-size: 0.95em;
+        }
+
+        footer .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+        }
+
+        .footer-column ul li a {
+            color: #eee;
+            transition: all 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: #4CAF50;
+            transform: translateX(5px);
+        }
+
+        .footer-column p {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .contact-us {
+            text-align: center;
+            border-top: 1px solid #555;
+            padding-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .contact-us a {
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .contact-us a:hover {
+            background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            text-align: center;
+            color: #ccc;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .social-icons a {
+            color: #ccc;
+            font-size: 1.2em;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #4CAF50;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 992px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .other-logins {
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 10px 10px;
+            }
+
+            .hero-banner h1, .form-card h2 {
+                font-size: 2em;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-banner h1, .form-card h2 {
+                font-size: 1.5em;
+            }
+
+            .hero-banner p {
+                font-size: 1em;
+            }
+
+            .form-links {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .btn-form, .btn-primary {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="logo.png" alt="MyAttendanceTracker Logo">
+                <span>MyAttendanceTracker.com</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="nav-btn" data-section="home">HOME</a></li>
+                    <li class="dropdown">
+                        <a href="#" aria-haspopup="true">FEATURES <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content" role="menu">
+                            <a href="#" role="menuitem">Attendance Entry</a>
+                            <a href="#" role="menuitem">Dashboards</a>
+                            <a href="#" role="menuitem">Export Tools</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" aria-haspopup="true">MORE <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content" role="menu">
+                            <a href="#" role="menuitem">About Us</a>
+                            <a href="#" role="menuitem">Privacy Policy</a>
+                            <a href="#" role="menuitem">Contact Us</a>
+                        </div>
+                    </li>
+                    <li><a href="#signup" class="nav-btn" data-section="signup">SIGN UP</a></li>
+                    <li><a href="#login" class="nav-btn" data-section="login">LOGIN</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero-banner" role="banner">
+            <div class="container">
+                <h1>WELCOME TO MYATTENDANCETRACKER</h1>
+                <p>Simplify attendance management for teachers and students with our free, user-friendly platform.</p>
+                <a href="#signup" class="btn-primary" data-section="signup">Get Started</a>
+                <a href="#login" class="btn-primary" data-section="login">Login</a>
+            </div>
+        </section>
+
+        <section id="signup" class="form-section" role="main">
+            <div class="container">
+                <div class="hero-banner">
+                    <h1>SIGN UP FOR MYATTENDANCETRACKER</h1>
+                </div>
+                <div class="form-grid">
+                    <div class="form-card">
+                        <h2>Create Your Account</h2>
+                        <p>Join MyAttendanceTracker to manage attendance efficiently. Fill in the details below to get started.</p>
+                        <div class="progress-bar"><div></div></div>
+                        <form id="signupForm" role="form" aria-label="Sign Up Form">
+                            <div class="form-group">
+                                <label for="signupFullName">Full Name*</label>
+                                <input type="text" id="signupFullName" name="fullName" required aria-required="true">
+                                <span class="tooltip">Enter your full name (e.g., John Doe)</span>
+                                <i class="fas fa-check input-icon"></i>
+                                <div class="error-message" id="signupFullNameError">Please enter your full name.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupEmail">Email Address*</label>
+                                <input type="email" id="signupEmail" name="email" required aria-required="true">
+                                <span class="tooltip">Use a valid email (e.g., user@example.com)</span>
+                                <i class="fas fa-check input-icon"></i>
+                                <div class="error-message" id="signupEmailError">Please enter a valid email address.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupPassword">Password*</label>
+                                <input type="password" id="signupPassword" name="password" required aria-required="true">
+                                <span class="tooltip">Minimum 8 characters, include letters and numbers</span>
+                                <i class="fas fa-check input-icon"></i>
+                                <div class="error-message" id="signupPasswordError">Password must be at least 8 characters long.</div>
+                                <div class="password-strength"><div></div></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupConfirmPassword">Confirm Password*</label>
+                                <input type="password" id="signupConfirmPassword" name="confirmPassword" required aria-required="true">
+                                <span class="tooltip">Must match the password above</span>
+                                <i class="fas fa-check input-icon"></i>
+                                <div class="error-message" id="signupConfirmPasswordError">Passwords do not match.</div>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="signupTerms" name="terms" required aria-required="true">
+                                    I agree to the <a href="#" style="color: #64B5F6">Terms and Conditions</a>
+                                </label>
+                                <div class="error-message" id="signupTermsError">You must agree to the terms.</div>
+                            </div>
+                            <button type="submit" class="btn-form">SIGN UP</button>
+                        </form>
+                        <div class="form-links">
+                            <a href="#login" data-section="login">Already have an account? Login</a>
+                        </div>
+                    </div>
+                    <div class="other-logins">
+                        <h3>OTHER LOGINS</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-caret-right"></i> Parent</a></li>
+                            <li><a href="#"><i class="fas fa-caret-right"></i> Student</a></li>
+                        </ul>
+                        <div class="about-myat-sidebar">
+                            <h4>ABOUT MYATTENDANCETRACKER</h4>
+                            <p>We started this project to address the problems facing manual attendance of students in Kabarak University</p>
+                            <p>Victory, Founder</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="login" class="form-section" role="main">
+            <div class="container">
+                <div class="hero-banner">
+                    <h1>LOGIN TO YOUR ATTENDANCE TRACKER</h1>
+                </div>
+                <div class="form-grid">
+                    <div class="form-card">
+                        <h2>Login</h2>
+                        <p>Enter the information you used to register for AttendanceTracker and you'll be taken directly to your attendance tracking dashboard.</p>
+                        <div class="progress-bar"><div></div></div>
+                        <form id="loginForm" role="form" aria-label="Login Form">
+                            <div class="form-group">
+                                <label for="loginEmail">Email Address*</label>
+                                <input type="email" id="loginEmail" name="email" required aria-required="true">
+                                <span class="tooltip">Use a valid email (e.g., user@example.com)</span>
+                                <i class="fas fa-check input-icon"></i>
+                                <div class="error-message" id="loginEmailError">Please enter a valid email address.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password*</label>
+                                <input type="password" id="loginPassword" name="password" required aria-required="true">
+                                <span class="tooltip">Enter your password</span>
+                                <i class="fas fa-check input-icon"></i>
+                                <div class="error-message" id="loginPasswordError">Please enter your password.</div>
+                            </div>
+                            <button type="submit" class="btn-form">LOGIN</button>
+                        </form>
+                        <div class="form-links">
+                            <a href="#signup" data-section="signup">Don't have an account? Sign Up</a>
+                            <a href="#">Forgot your password?</a>
+                        </div>
+                    </div>
+                    <div class="other-logins">
+                        <h3>OTHER LOGINS</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-caret-right"></i> Parent</a></li>
+                            <li><a href="#"><i class="fas fa-caret-right"></i> Student</a></li>
+                        </ul>
+                        <div class="about-myat-sidebar">
+                            <h4>ABOUT ATTENDANCETRACKER</h4>
+                            <p>We started this project to address the problems facing manual attendance of students in Kabarak University</p>
+                            <p>Victory, Founder</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container grid-4">
+            <div class="footer-column">
+                <h4>FEATURES:</h4>
+                <ul>
+                    <li><a href="#">Fast and Easy Attendance Entry</a></li>
+                    <li><a href="#">Student and Class Dashboard</a></li>
+                    <li><a href="#">Customizable Attendance Reporting</a></li>
+                    <li><a href="#">Simple Data Export</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>BENEFITS</h4>
+                <ul>
+                    <li><a href="#">Track Attendance From Anywhere</a></li>
+                    <li><a href="#">Perfect For Any Class Or Group</a></li>
+                    <li><a href="#">Great Import and Export Tools</a></li>
+                    <li><a href="#">Priced Right (It's FREE)</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>PAGES</h4>
+                <ul>
+                    <li><a href="#signup" data-section="signup">Register</a></li>
+                    <li><a href="#login" data-section="login">Login</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">About MyAT</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>ABOUT ATTENDANCETRACKER</h4>
+                <p>MyAttendanceTracker is a free attendance tracking system designed to help teachers and students manage attendance efficiently.</p>
+                <p>We are committed to providing a user-friendly platform that simplifies attendance management for educational institutions.</p>
+            </div>
+        </div>
+        <div class="contact-us">
+            <h4>CONTACT ME WITH QUESTIONS:</h4>
+            <a href="mailto:info@myattendancetracker.com">SEND US AN EMAIL</a>
+        </div>
+        <div class="copyright">
+            <p>© 2025 AttendanceTracker. All Rights Reserved.</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Section navigation
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a[data-section]');
+
+        function showSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.toggle('active', section.id === sectionId);
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('data-section') === sectionId);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.getAttribute('data-section');
+                showSection(sectionId);
+            });
+        });
+
+        // Show home section by default
+        showSection('home');
+
+        // Form validation for signup
+        const signupForm = document.getElementById('signupForm');
+        const signupInputs = signupForm.querySelectorAll('input:not([type="checkbox"])');
+        const signupTerms = document.getElementById('signupTerms');
+        const signupProgressBar = signupForm.querySelector('.progress-bar div');
+        const signupPasswordStrength = signupForm.querySelector('.password-strength div');
+        const signupBtn = signupForm.querySelector('.btn-form');
+
+        signupInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                validateField(input, 'signup');
+                updateProgress(signupForm, signupInputs, signupTerms, signupProgressBar);
+                if (input.id === 'signupPassword') updatePasswordStrength();
+            });
+        });
+
+        signupTerms.addEventListener('change', () => {
+            validateField(signupTerms, 'signup');
+            updateProgress(signupForm, signupInputs, signupTerms, signupProgressBar);
+        });
+
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            signupInputs.forEach(input => {
+                validateField(input, 'signup');
+                if (!input.parentElement.classList.contains('valid')) {
+                    isValid = false;
+                }
+            });
+
+            validateField(signupTerms, 'signup');
+            if (!signupTerms.checked) isValid = false;
+
+            if (isValid) {
+                signupBtn.classList.add('loading');
+                signupBtn.disabled = true;
+                setTimeout(() => {
+                    alert('Sign-up successful! Redirecting to dashboard...');
+                    signupBtn.classList.remove('loading');
+                    signupBtn.disabled = false;
+                    signupForm.reset();
+                    signupProgressBar.style.width = '0%';
+                    signupPasswordStrength.style.width = '0%';
+                    signupInputs.forEach(input => input.parentElement.classList.remove('valid'));
+                    showSection('login');
+                }, 1500);
+            }
+        });
+
+        // Form validation for login
+        const loginForm = document.getElementById('loginForm');
+        const loginInputs = loginForm.querySelectorAll('input');
+        const loginProgressBar = loginForm.querySelector('.progress-bar div');
+        const loginBtn = loginForm.querySelector('.btn-form');
+
+        loginInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                validateField(input, 'login');
+                updateProgress(loginForm, loginInputs, null, loginProgressBar);
+            });
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            loginInputs.forEach(input => {
+                validateField(input, 'login');
+                if (!input.parentElement.classList.contains('valid')) {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+                setTimeout(() => {
+                    alert('Login successful! Redirecting to dashboard...');
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                    loginForm.reset();
+                    loginProgressBar.style.width = '0%';
+                    loginInputs.forEach(input => input.parentElement.classList.remove('valid'));
+                    showSection('home');
+                }, 1500);
+            }
+        });
+
+        function validateField(input, formType) {
+            const error = document.getElementById(`${formType}${input.id.replace(formType, '')}Error`);
+            const icon = input.nextElementSibling?.classList.contains('tooltip') ? input.nextElementSibling.nextElementSibling : null;
+            let isValid = false;
+
+            if (input.id === `${formType}FullName`) {
+                isValid = input.value.trim().length > 0;
+            } else if (input.id === `${formType}Email`) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                isValid = emailPattern.test(input.value.trim());
+            } else if (input.id === `${formType}Password`) {
+                isValid = input.value.length >= (formType === 'signup' ? 8 : 1);
+            } else if (input.id === `${formType}ConfirmPassword`) {
+                isValid = input.value === document.getElementById(`${formType}Password`).value;
+            } else if (input.id === `${formType}Terms`) {
+                isValid = input.checked;
+            }
+
+            if (error) error.style.display = isValid ? 'none' : 'block';
+            if (icon) input.parentElement.classList.toggle('valid', isValid);
+        }
+
+        function updateProgress(form, inputs, terms, progressBar) {
+            const totalFields = terms ? inputs.length + 1 : inputs.length;
+            let filledFields = 0;
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') filledFields++;
+            });
+            if (terms && terms.checked) filledFields++;
+            const progress = (filledFields / totalFields) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function updatePasswordStrength() {
+            const password = document.getElementById('signupPassword').value;
+            let strength = 0;
+            if (password.length >= 8) strength += 33;
+            if (/[A-Za-z]/.test(password) && /\d/.test(password)) strength += 33;
+            if (/[!@#$%^&*]/.test(password)) strength += 34;
+            signupPasswordStrength.style.width = `${strength}%`;
+            signupPasswordStrength.style.background = strength < 50 ? '#D32F2F' : strength < 80 ? '#FFB300' : '#4CAF50';
+        }
+
+        // Dropdown functionality
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        });
+
+        // Keyboard navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (link.parentElement.classList.contains('dropdown')) {
+                        link.parentElement.classList.toggle('active');
+                    } else {
+                        const sectionId = link.getAttribute('data-section');
+                        if (sectionId) showSection(sectionId);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
